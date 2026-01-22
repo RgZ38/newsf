@@ -1,0 +1,49 @@
+services:
+  web:
+    build: .
+    container_name: ascs-app
+    user: "${UID}:${GID}"
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/entrypoint.sh:/entrypoint.sh:ro
+    entrypoint: ["/entrypoint.sh"]
+    environment:
+      APP_ENV: dev
+
+    depends_on:
+        - db
+    networks:
+        - ascsnw
+
+  db:
+    image: mariadb:12.0
+    container_name: ascs-mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ascs
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - ascsnw
+
+  redis:
+    image: redis:7-alpine
+    container_name: ascs-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - ascsnw
+      
+networks:
+  ascsnw:
+
+volumes:
+  db-data:
