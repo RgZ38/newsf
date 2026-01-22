@@ -1,0 +1,31 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content %}
+    <div class="container">
+    <h1 class="mb-4">Accueil Admin</h1>
+
+    <div class="row">
+        {% for item in items %}
+            <div class="col-12 col-md-6 col-lg-4">
+                <a href="{{ item.url }}" class="text-decoration-none">
+                    <div class="card h-100">
+                        <div class="card-body d-flex align-items-center">
+                            <i class="{{ item.icon }} fa-2x me-3"></i>
+                            <div>
+                                <div class="h5 mb-0">{{ item.label }}</div>
+                                <small class="text-muted">Ouvrir la liste</small>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info mb-0">
+                    Aucun module/CRUD disponible.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    </div>
+{% endblock %}
